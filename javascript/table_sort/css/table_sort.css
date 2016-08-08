@@ -1,0 +1,70 @@
+body{
+    font-family: Trebuchet MS, Lucida Sans Unicode, Arial, sans-serif;
+    font-size:0.8em;
+}
+p{
+    margin-bottom:0px;
+    font-weight:bold;
+}
+/* Start layout CSS */
+.tableWidget_headerCell,.tableWigdet_headerCellOver,.tableWigdet_headerCellDown{    /* General rules for both standard column header and mouse on header of sortable columns */
+    cursor:pointer;
+    border-bottom:3px solid #C5C2B2;
+    border-right:1px solid #ACA899;
+    border-left:1px solid #FFF;
+    background-color: #ECE9D8;
+}
+.tableWidget_headerCell{    /* Standard column header */
+    border-top:2px solid #ECE9D8;
+}
+.tableWigdet_headerCellOver{    /* Rollover on sortable column header */
+    border-top:2px solid #FFC83C;
+}
+.tableWidget tbody .tableWidget_dataRollOver{   /* Rollover style on mouse over (Data) */
+    background-color:#FFF;  /* No mouseover color in this example - specify another color if you want this */
+}
+.tableWigdet_headerCellDown{
+    border-top:2px solid #FFC83C;
+    background-color:#DBD8C5;
+    border-left:1px solid #ACA899;
+    border-right:1px solid #FFF;
+}
+.tableWidget td{
+    margin:0px;
+    padding:2px;
+    border-bottom:1px solid #EAE9E1;    /* Border bottom of table data cells */
+}
+.tableWidget tbody{
+    background-color:#FFF;
+}
+.tableWidget{
+    font-family:arial;
+    font-size:12px;
+    width:400px;
+}
+/* End layout CSS */
+div.widget_tableDiv {
+    border:1px solid #ACA899;   /* Border around entire widget */
+    height: 200px;
+    overflow:auto;
+    overflow-y:auto;
+    overflow:-moz-scrollbars-vertical;
+    width:400px;
+}
+html>body div.widget_tableDiv {
+    overflow: hidden;
+    width:400px;
+}
+.tableWidget thead{
+    position:relative;
+}
+.tableWidget thead tr{
+    position:relative;
+    top:0px;
+    bottom:0px;
+}
+.tableWidget .scrollingContent{
+    overflow-y:auto;
+    overflow:-moz-scrollbars-vertical;
+    width:100%;
+}
