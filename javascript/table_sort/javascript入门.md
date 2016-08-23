@@ -1,7 +1,6 @@
 # javascript 入门
 
-[3.5 如何调试](#3.5)
-<a id="back"></a>
+[3.5 如何调试](#3.5) <a id="back">bbb</a>
 
 ## javascript 简介
 #### [语言概述](https://zh.wikipedia.org/zh-cn/JavaScript)
@@ -74,8 +73,7 @@
         addLoadEvent(initTableWidget('myTable',500,600,Array('S','N',false,'N','S')));
     };
 ```
-<h4 id="3.5">添加注释</h4>
-[回归](#back)
+<h4 id="3.5">添加注释</h4>  [回归](#back)
 
 #### 4.如何添加注释
 - 方式一: 使用 `//`,   eg. `//全局变量`
