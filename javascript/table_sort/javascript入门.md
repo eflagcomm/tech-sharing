@@ -1,10 +1,15 @@
 # javascript 入门
 
+[3.5 如何调试](#3.5)
+
 ## javascript 简介
 #### [语言概述](https://zh.wikipedia.org/zh-cn/JavaScript)
 - javascript 是一种支持动态类型, 基于原型的直译式语言(不用编译, 直接运行)
 - javascript 最早在HTML网页使用, 浏览器内置javascript引擎, 解析网页中的 javascript, 给HTML网页增加动态功能.
 - 现在它也可被用于web服务器端, 如Node.js.
+
+
+[点击跳转一](#jump)
 
 #### [诞生历史](http://javascript.ruanyifeng.com/introduction/history.html)
 - 1992年底美国国家超级电脑应用中心(NCSA)开发了人类历史上第一个浏览器Mosaic.
@@ -13,11 +18,17 @@
 - 1996年3月,Navigator 2.0浏览器正式内置了JavaScript脚本语言
 - 1997年7月,ECMAScript 1.0发布, 它和 javascript的关系是: 前者是后者的规格,后者是前者的一种实现
 
+[点击跳转二](#md-anchor)
+
+<span id="jump">跳转到的地方一</span>
+
 #### 应用前景
 - 随着语言的广泛应用, javascript 现在不只在 web 前端, 还涉及其他领域 eg. web 后端, Hybrid App, ...
 
 ## 简明教程
 - 本教程分为入门, 中级, 高级, 这只是一个建议的学习顺序, 但也不要拘泥于此
+
+<a name="md-anchor" id="md-anchor">跳转到的地方二</a>
 
 ### 入门教程
 
@@ -62,6 +73,7 @@
         addLoadEvent(initTableWidget('myTable',500,600,Array('S','N',false,'N','S')));
     };
 ```
+<h2 id="3.5">添加注释</h2>
 
 #### 4.如何添加注释
 - 方式一: 使用 `//`,   eg. `//全局变量`
