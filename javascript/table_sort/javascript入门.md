@@ -73,7 +73,7 @@
         addLoadEvent(initTableWidget('myTable',500,600,Array('S','N',false,'N','S')));
     };
 ```
-<h2 id="3.5">添加注释</h2>
+<h4 id="3.5">添加注释</h4>
 
 #### 4.如何添加注释
 - 方式一: 使用 `//`,   eg. `//全局变量`
