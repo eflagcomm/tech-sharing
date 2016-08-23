@@ -215,7 +215,7 @@ json 在前后台交互过程中用的非常广泛, 现做一个基本的介绍
 - json反序列化为js对象:
  `JSON.parse('JSONstring')`
 
-###　6.jQuery 库的使用
+## jQuery 库的使用
 #### 1.基本介绍
 jQuery 是JavaScript世界中使用最广泛的一个库, 简名: $,  它的主要特点
 
