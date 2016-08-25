@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>qunit test</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../resourse/qunit-2.0.1.css">
+    <script type="text/javascript" src="../resourse/qunit-2.0.1.js"></script>
+    <script>
+    function compare(left, right) {
+        return left - right;
+    }
+
+    QUnit.test("test_oneplusone", function(assert) {
+        assert.ok(compare(1, 3) < 0, "left should less than right");
+        assert.ok(compare(3, 1) > 0, "left should more than right");
+    });
+    </script>
+</head>
+
+<body>
+    <div id="qunit"></div>
+    <!-- <div id="qunit-fixture"></div> -->
+</body>
+
+</html>
