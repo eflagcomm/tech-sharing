@@ -149,6 +149,15 @@ examples/src/main/python/streaming/kafka_wordcount.py localhost:2181 test
 
 启动编写好的的测试程序，在yarn上看到如下内容输出则表示flume + kafka + spark streaming环境配置成功。
 
+```
+-------------------------------------------
+Time: 2016-08-26 15:09:43
+-------------------------------------------
+(u'hello', 7300)
+(u'world', 7300)
+
+```
+
 ## 5. 附录
 
 ### 测试程序代码
@@ -194,9 +203,7 @@ ThriftClient::ThriftClient()
 void ThriftClient::sendEvent() {
   std::map<std::string, std::string> headers;
   headers.insert(std::make_pair("head", "head"));
-  std::string sBody =
-      "TableName:TEST_TABLE ConfigID:5555 ResponseIP:77522222 ProtoType:67 "
-      "StartTime:3333 Interval:24544 AccessTimes:45 DomainLen:12\n";
+  std::string sBody = "hello world\n";
   if (!transport->isOpen()) {
     transport->open();
   }
