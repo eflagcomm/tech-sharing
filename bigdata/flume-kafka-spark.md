@@ -63,6 +63,7 @@ host.name=master1 #设备网络名
  - 查看topic是否创建成功: `./bin/kafka-topics.sh --list --zookeeper localhost:2181`
  - 启动消费者: `./bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test`
  - 启动生产者: `./bin/kafka-console-producer.sh --broker-list master1:9092 --topic test` ,在集群任意机器上的生产者终端随意输入字符，回车后在任意机器上的消费者终端输出同样的字符，则kafka集群配置成功
+- 其他kafka相关配置请参考：[kafka quickstart](http://kafka.apache.org/documentation.html#quickstart)
 - 查看zookeeper log: zookeeper的log直接打开是乱码，需要使用下述命令查看: `java -classpath .:/opt/modules/kafka2100821/libs/slf4j-api-1.7.6.jar:/opt/modules/kafka2100821/libs/zookeeper-3.4.6.jar org.apache.zookeeper.server.LogFormatter ./log.100000001`
 
 ## 2. 在数据源上安装flume
@@ -97,6 +98,7 @@ agent1.sinks.sink1.zookeeperConnect=master1:2181,slave1:2182,master2:2182
 agent1.sinks.sink1.groupid=spark-streaming-consumer
 ```
 
+替他flume配置请考：[FlumeUserGuide](http://flume.apache.org/FlumeUserGuide.html)
 - 修改java虚拟机使用内存大小， 在文件conf/flume-env.sh中添加如下内容：
 
 ```
@@ -141,7 +143,7 @@ bin/spark-submit --master yarn --deploy-mode cluster --num-executors 3 \
 --jars spark-streaming-kafka-0-8-assembly_2.11-2.0.0.jar \
 examples/src/main/python/streaming/kafka_wordcount.py localhost:2181 test
 ```
-
+- [streaming programming guide](https://spark.apache.org/docs/1.6.1/streaming-programming-guide.html)
 - 注意:
  - 集群机器cpu需要有四个以上的逻辑核心才能正常输出结果。
 
