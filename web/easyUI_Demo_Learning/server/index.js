@@ -1,0 +1,10 @@
+var server = require("./server");
+var requesthander = require("./requesthander");
+var router = require("./router");
+var handler = {};
+handler["/test"] = requesthander.index;
+handler["/favicon.ico"] = requesthander.index;
+handler["/edituser"] = requesthander.edituser;
+handler["/destroyuser"] = requesthander.destroyuser;
+handler["/newuser"] = requesthander.newuser;
+server.start(router.route,handler);
