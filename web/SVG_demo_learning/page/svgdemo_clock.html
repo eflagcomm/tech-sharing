@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html style="width:100%;height:100%" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body style="width:100%;height:100%">
+  <svg style="width:100%;height:100%">
+    <circle cx="500px" cy="250px" r="200px" stroke="black" stroke-width="20px" fill="none"></circle>
+    <path id="hour" d="M500,250 L500,130" stroke="black" stroke-width="8px" stroke-linecap="round"></path>
+    <path id="min" d="M500,250 L500,100" stroke="black" stroke-width="8px" stroke-linecap="round"></path>
+    <path id="sec" d="M500,250 L500,80" stroke="black" stroke-width="3px" stroke-linecap="round"></path>
+     
+  </svg>
+  <script>
+    var hour = document.getElementById("hour");
+    var min = document.getElementById("min");
+    var sec = document.getElementById("sec");
+    setInterval(function(){
+      function r(rel,deg){
+        rel.setAttribute('transform','rotate('+deg+' 500 250)')
+      }
+      var date = new Date();
+      r(sec , 6*date.getSeconds());
+      r(min , 6*date.getMinutes());
+      r(hour, 30*(date.getHours()%12)+date.getMinutes()/2);
+    },1000);
+  </script>
+</body>
+</html>
