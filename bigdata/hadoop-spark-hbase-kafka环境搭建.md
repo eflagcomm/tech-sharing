@@ -706,7 +706,7 @@ zookeeper.connect=zk125:2181,zk126:2181,zk127:2181
 
 * "NT" = Not tested
 
-| | HBase-0.94.x | HBase-0.98.x (Support for Hadoop 1.1+ is deprecated.) | HBase-1.0.x (Hadoop 1.x is NOT supported) | HBase-1.1.x | HBase-1.2.x | HBase-1.3.x |
+|.| HBase-0.94.x | HBase-0.98.x (Support for Hadoop 1.1+ is deprecated.) | HBase-1.0.x (Hadoop 1.x is NOT supported) | HBase-1.1.x | HBase-1.2.x | HBase-1.3.x |
 |-------------------|--|--|--|--|-|-|
 |Hadoop-1.0.x       |X |X |X |X |X|X|
 |Hadoop-1.1.x       |S |NT|X |X |X|X|
