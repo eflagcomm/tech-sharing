@@ -1,6 +1,10 @@
 ###Easyui Demo
 
-+ ####前端：/front/page/basic_CRUDapplication.html
++ ####功能：easyui数据表格的的增删改(nodejs编写后台)以及组合查询
+
++ ####前端：/front/page/basic_CRUDapplicationwithsearch.html
+            /front/js/basic_crudapplicationwithsearch_js.js
+            /front/js/comb_searchDEMO.js
 
 + ####后端：/server/
 

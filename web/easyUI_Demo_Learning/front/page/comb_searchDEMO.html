@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style type="text/css">
+      #searchtable tr td select {
+        width : 50px;
+      }
+  </style>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../resourse/easyui/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="../resourse/easyui/themes/icon.css">
+  <script type="text/javascript" src="../resourse/easyui/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="../resourse/easyui/jquery.easyui.min.js"></script>
+</head>
+<body>
+  <table id="searchtable" style="width:200px">
+    <tr>
+      <td>
+      </td>
+      <td>
+        <select id="key" name="keyname" class="easyui-combobox"> 
+        </select>
+      </td>
+      <td>
+        <select id="operater" name="operater" class="easyui-combobox">
+          <option value="equal">=</option>
+          <option value="more">></option>
+          <option value="more&equal">>=</option>
+          <option value="less">< </option>
+          <option value="less&equal"><=</option> 
+        </select>
+      </td>
+      <td>
+        <input class="easyui-textbox">
+      </td>
+    </tr>
+  </table>
+  <div>
+    <a href="#" id="add" class="easyui-linkbutton" iconCls="icon-add" plain="true">add</a>
+    <a href="#" id="remove" class="easyui-linkbutton" iconCls="icon-remove" plain="true">remove</a>
+    <a href="#" id="cancel" class="easyui-linkbutton" iconCls="icon-cancel" plain="true">cancel</a>
+  </div>
+  <script type="text/javascript" src="../js/comb_searchDEMO.js"></script>
+  <script>
+    var table = $("#searchtable");
+    var addbutton = $("#add");
+    var removebutton = $("#remove");
+    $.searchtabevent.init(table,addbutton,removebutton);
+  </script>
+</body>
+</html>

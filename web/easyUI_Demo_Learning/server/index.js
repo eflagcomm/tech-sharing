@@ -7,4 +7,5 @@ handler["/favicon.ico"] = requesthander.index;
 handler["/edituser"] = requesthander.edituser;
 handler["/destroyuser"] = requesthander.destroyuser;
 handler["/newuser"] = requesthander.newuser;
+handler["/getcolumn"] = requesthander.getcolumn;
 server.start(router.route,handler);

@@ -22,6 +22,9 @@ function destroyUser()
       if(r){
         $.post('http://localhost:8888/destroyuser',{id:row.id},function(result){
           if(result.success){
+            $('#dg').datagrid({
+              url:"http://localhost:8888/test"
+            });
             $('#dg').datagrid('reload');
           }else{
             $.messager.show({
@@ -48,6 +51,9 @@ function saveUser(){
         });
       }else{
         $('#dlg').dialog('close');
+        $('#dg').datagrid({
+          url:"http://localhost:8888/test"
+        });
         $('#dg').datagrid('reload');
       }
     },
