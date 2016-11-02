@@ -313,6 +313,22 @@
                  <name>yarn.client.failover-proxy-provider</name>
                  <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
              </property>
+             <property>
+                 <name>yarn.log-aggregation-enable</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+                 <value>5</value>
+             </property>
+             <property>
+                 <name>yarn.nodemanager.delete.debug-delay-sec</name>
+                 <value>36000</value>
+             </property>
+             <property>
+                 <name>yarn.log.server.url</name>
+                 <value>http://nna:19888/jobhistory/logs</value>
+             </property>
          </configuration>
          ```
 
@@ -376,6 +392,22 @@
              <property>
                  <name>yarn.client.failover-proxy-provider</name>
                  <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation-enable</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+                 <value>5</value>
+             </property>
+             <property>
+                 <name>yarn.nodemanager.delete.debug-delay-sec</name>
+                 <value>36000</value>
+             </property>
+             <property>
+                 <name>yarn.log.server.url</name>
+                 <value>http://nna:19888/jobhistory/logs</value>
              </property>
          </configuration>
          ```
@@ -458,8 +490,67 @@
                 <name>yarn.nodemanager.resource.memory-mb</name>
                 <value>49152</value>
             </property>
+             <property>
+                 <name>yarn.log-aggregation-enable</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+                 <value>5</value>
+             </property>
+             <property>
+                 <name>yarn.nodemanager.delete.debug-delay-sec</name>
+                 <value>36000</value>
+             </property>
+             <property>
+                 <name>yarn.log.server.url</name>
+                 <value>http://nna:19888/jobhistory/logs</value>
+             </property>
         </configuration>
         ```
+
+- 在/opt/hadoop/etc/hadoop/mapred-site.xml中配置如下内容
+
+    ```xml
+    <configuration>
+        <property>
+            <name>mapreduce.framework.name</name>
+            <value>yarn</value>
+        </property>
+        <property>
+            <name>mapreduce.jobhistory.address</name>
+            <value>nna:10020</value>
+        </property>
+        <property>
+            <name>mapreduce.jobhistory.webapp.address</name>
+            <value>nna:19888</value>
+        </property>
+        <property>
+            <name>mapred.job.tracker</name>
+            <value>nna:9001</value>
+        </property>
+        <property>
+            <name>mapred.local.dir</name>
+            <value>/opt/tmp</value>
+        </property>
+        <property>
+            <name>mapreduce.map.output.compress</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>mapreduce.map.output.compress.codec</name>
+            <value>com.hadoop.compression.lzo.LzoCodec</value>
+        </property>
+        <property>
+            <name>mapred.child.env</name>
+            <value>LD_LIBRARY_PATH=/opt/hadoop/lib/native</value>
+        </property>
+        <property>
+	        <name>mapred.remote.os</name>
+	        <value>Linux</value>
+        </property>
+    </configuration>
+    ```
 
 - 在/opt/hadoop/etc/hadoop/slaves中配置如下内容
 
@@ -504,6 +595,7 @@
     spark.master                     spark://nna:7077
     spark.eventLog.enabled           true
     spark.eventLog.dir               hdfs://eflagcluster/sparkeventlog
+    spark.history.fs.logDirectory    hdfs://eflagcluster/sparkeventlog  # 之后可以使用无参命令 start-history-server.sh 启动历史服务
     ```
 
 - 在/opt/spark/conf/slaves中配置如下内容
