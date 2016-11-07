@@ -3,70 +3,62 @@
 ## 0. 集群环境
 
 - jdk版本:1.8.0
-
 - sacla版本:2.10
+- Hadoop版本:2.7.2
+- Spark版本:2.0.0
+- HBase版本:1.2.2
+- Kafka版本:2.11
+- ZooKeeper版本:3.4.8
+- 集群 hostname, 拓扑图, 安装的应用软件:
 
-- hadoop版本:2.7.2
+    ```
+    +--------------+   +--------------+   +--------------+   +--------------+   +--------------+
+    |    nna       |   |    nns       |   |    zk125     |   |    zk126     |   |    zk127     |
+    |    Hadoop    |   |    Hadoop    |   |  ZooKeeper   |   |  ZooKeeper   |   |  ZooKeeper   |
+    |    Spark     |   |    Spark     |   |              |   |              |   |              |
+    |    HBase     |   |    HBase     |   |              |   |              |   |              |
+    +--------------+   +--------------+   +--------------+   +--------------+   +--------------+
+           |                  |                  |                   |                  |         
+           |                  |                  |                   |                  |         
+    +------------------------------------------------------------------------------------------+
+    |                                             net                                          |
+    +------------------------------------------------------------------------------------------+
+               |         |        |         |        |         |         |        |
+               |         |        |         |        |         |         |        |
+        +--------------+ | +--------------+ | +--------------+ | +--------------+ |
+        |   dn21       | | |   dn108      | | |   dn121      | | |    dn122     | |
+        |   Hadoop     | | |   Hadoop     | | |   Hadoop     | | |    Hadoop    | |
+        |   Spark      | | |   Spark      | | |   Spark      | | |    Spark     | |
+        |   HBase      | | |   HBase      | | |   HBase      | | |    HBase     | |
+        |   Kafka      | | |   Kafka      | | |   Kafka      | | |    Kafka     | |
+        +--------------+ | +--------------+ | +--------------+ | +--------------+ |
+                         |                  |                  |                  |
+                  +--------------+   +--------------+   +--------------+   +--------------+
+                  |   dn123      |   |   dn124      |   |   dn203      |   |    dn205     |
+                  |   Hadoop     |   |   Hadoop     |   |   Hadoop     |   |    Hadoop    |
+                  |   Spark      |   |   Spark      |   |   Spark      |   |    Spark     |
+                  |   HBase      |   |   HBase      |   |   HBase      |   |    HBase     |
+                  |   Kafka      |   |   Kafka      |   |   Kafka      |   |    Kafka     |
+                  +--------------+   +--------------+   +--------------+   +--------------+
+    ```
 
-- spark版本:2.0.0
+- 在hosts文件中追加如下内容
 
-- hbase版本:1.2.2
-
-- kafka版本:2.11
-
-- zookeeper版本:3.4.8
-
- 集群结构：
-
-```
-+--------------+   +--------------+   +--------------+   +--------------+   +--------------+
-|    nna       |   |    nns       |   |    zk125     |   |    zk126     |   |    zk127     |
-|    Hadoop    |   |    Hadoop    |   |  zookeeper1  |   |  zookeeper2  |   |  zookeeper3  |
-|    spark     |   |    spark     |   |              |   |              |   |              |
-|    hbase     |   |    hbase     |   |              |   |              |   |              |
-|    kafka     |   |    kafka     |   |              |   |              |   |              |
-+--------------+   +--------------+   +--------------+   +--------------+   +--------------+
-       |                  |                  |                   |                  |         
-       |                  |                  |                   |                  |         
-+------------------------------------------------------------------------------------------+
-|                                             net                                          |
-+------------------------------------------------------------------------------------------+
-           |         |        |         |        |         |         |        |
-           |         |        |         |        |         |         |        |
-    +--------------+ | +--------------+ | +--------------+ | +--------------+ |
-    |   dn21       | | |   dn108      | | |   dn121      | | |    dn122     | |
-    |   Hadoop     | | |   Hadoop     | | |   Hadoop     | | |    Hadoop    | |
-    |   spark      | | |   spark      | | |   spark      | | |    spark     | |
-    |   hbase      | | |   hbase      | | |   hbase      | | |    hbase     | |
-    |   kafka      | | |   kafka      | | |   kafka      | | |    kafka     | |
-    +--------------+ | +--------------+ | +--------------+ | +--------------+ |
-                     |                  |                  |                  |
-              +--------------+   +--------------+   +--------------+   +--------------+
-              |   dn123      |   |   dn124      |   |   dn203      |   |    dn205     |
-              |   Hadoop     |   |   Hadoop     |   |   Hadoop     |   |    Hadoop    |
-              |   spark      |   |   spark      |   |   spark      |   |    spark     |
-              |   hbase      |   |   hbase      |   |   hbase      |   |    hbase     |
-              |   kafka      |   |   kafka      |   |   kafka      |   |    kafka     |
-              +--------------+   +--------------+   +--------------+   +--------------+
-```
-
- 在hosts文件中追加如下内容
-
- ```
-10.0.0.20  nna namenodeactive
-10.0.0.106 nns namenodestandby
-10.0.0.21  dn21
-10.0.0.108 dn108
-10.0.0.121 dn121
-10.0.0.122 dn122
-10.0.0.123 dn123
-10.0.0.124 dn124
-10.0.0.203 dn203
-10.0.0.205 dn205
-10.0.0.125 zk125
-10.0.0.126 zk126
-10.0.0.127 zk127
- ```
+    ```
+    10.0.0.20  nna namenodeactive
+    10.0.0.106 nns namenodestandby
+    10.0.0.21  dn21
+    10.0.0.108 dn108
+    10.0.0.121 dn121
+    10.0.0.122 dn122
+    10.0.0.123 dn123
+    10.0.0.124 dn124
+    10.0.0.203 dn203
+    10.0.0.205 dn205
+    10.0.0.125 zk125
+    10.0.0.126 zk126
+    10.0.0.127 zk127
+    ```
 
 ## 1. 安装jdk与scala
 
@@ -78,7 +70,7 @@
     ln -s /usr/share/scala-2.11 scala
     ```
 
-## 2. 安装zookeeper
+## 2. 安装ZooKeeper
 - 下载合适版本的hadoop安装包。并将该压缩包复制到设备“zk125，zk126，zk127”上。
 - 解压安装包至 `/home/cluster/package/`
 - 在`/opt`下创建软连接 `ln -s /home/cluster/package/zookeeper-3.4.8 zk`
@@ -313,6 +305,303 @@
                  <name>yarn.client.failover-proxy-provider</name>
                  <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
              </property>
+             <property>
+                 <name>yarn.log-aggregation-enable</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+                 <value>5</value>
+             </property>
+             <property>
+                 <name>yarn.nodemanager.delete.debug-delay-sec</name>
+                 <value>36000</value>
+             </property>
+             <property>
+                 <name>yarn.log.server.url</name>
+                 <value>http://nna:19888/jobhistory/logs</value>
+             </property>
+         </configuration>
+         ```
+
+    2. 在namenode standby上配置如下：
+
+         ```xml
+         <configuration>
+             <property>
+                 <name>yarn.resourcemanager.connect.retry-interval.ms</name>
+                 <value>2000</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
+                  <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.ha.enabled</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.ha.rm-ids</name>
+                 <value>rm1,rm2</value>
+             </property>
+             <!-- current resource manager id -->
+             <property>
+                 <name>yarn.resourcemanager.ha.id</name>
+                 <value>rm2</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.hostname.rm1</name>
+                 <value>nna</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.hostname.rm2</name>
+                 <value>nns</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.recovery.enabled</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.zk-address</name>
+                 <value>zk125:2181,zk126:2181,zk127:2181</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.store.class</name>
+                 <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.zk-address</name>
+                 <value>zk125:2181,zk126:2181,zk127:2181</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.cluster-id</name>
+                 <value>eflag-cluster-yarn</value>
+             </property>
+             <property>
+                 <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
+                 <value>5000</value>
+             </property>
+             <property>
+                 <name>yarn.client.failover-proxy-provider</name>
+                 <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation-enable</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+                 <value>5</value>
+             </property>
+             <property>
+                 <name>yarn.nodemanager.delete.debug-delay-sec</name>
+                 <value>36000</value>
+             </property>
+             <property>
+                 <name>yarn.log.server.url</name>
+                 <value>http://nna:19888/jobhistory/logs</value>
+             </property>
+         </configuration>
+         ```
+
+    3. 在datanode上配置如下：
+
+        ```xml
+        <configuration>
+            <property>
+                <name>yarn.resourcemanager.connect.retry-interval.ms</name>
+                <value>2000</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
+                 <value>true</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.ha.enabled</name>
+                <value>true</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.ha.rm-ids</name>
+                <value>rm1,rm2</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.hostname.rm1</name>
+                <value>nna</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.hostname.rm2</name>
+                <value>nns</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.recovery.enabled</name>
+                <value>true</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.zk-address</name>
+                <value>zk125:2181,zk126:2181,zk127:2181</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.store.class</name>
+                <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.zk-address</name>
+                <value>zk125:2181,zk126:2181,zk127:2181</value>
+            </property>
+            <property>
+                <name>yarn.resourcemanager.cluster-id</name>
+                <value>eflag-cluster-yarn</value>
+            </property>
+            <property>
+                <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
+                <value>5000</value>
+            </property>
+            <property>
+                <name>yarn.client.failover-proxy-provider</name>
+                <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
+            </property>
+            <property>
+               <name>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage</name>
+               <value>98.5</value>
+            </property>
+            <property>
+                <name>yarn.nodemanager.local-dirs</name>
+                <value>/opt/tmp/yarn/local</value>
+            </property>
+            <property>
+                <name>yarn.nodemanager.log-dirs</name>
+                <value>/opt/tmp/yarn/logs</value>
+            </property>
+            <!-- cpu逻辑核心数，根据设备实际配置填写-->
+            <property>
+                <name>yarn.nodemanager.resource.cpu-vcores</name>
+                <value>48</value>
+            </property>
+            <!-- 设备可使用内存，其值为设备内存减去系统保留内存和HBase保留内存，单位为MB，不同设备内存对应的保留内存参见附表-->
+            <property>
+                <name>yarn.nodemanager.resource.memory-mb</name>
+                <value>49152</value>
+            </property>
+             <property>
+                 <name>yarn.log-aggregation-enable</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+                 <value>5</value>
+             </property>
+             <property>
+                 <name>yarn.nodemanager.delete.debug-delay-sec</name>
+                 <value>36000</value>
+             </property>
+             <property>
+                 <name>yarn.log.server.url</name>
+                 <value>http://nna:19888/jobhistory/logs</value>
+             </property>
+        </configuration>
+        ```
+
+- 在/opt/hadoop/etc/hadoop/mapred-site.xml中配置如下内容
+
+    ```xml
+    <configuration>
+        <property>
+            <name>mapreduce.framework.name</name>
+            <value>yarn</value>
+        </property>
+        <property>
+            <name>mapreduce.jobhistory.address</name>
+            <value>nna:10020</value>
+        </property>
+        <property>
+            <name>mapreduce.jobhistory.webapp.address</name>
+            <value>nna:19888</value>
+        </property>
+        <property>
+            <name>mapred.job.tracker</name>
+            <value>nna:9001</value>
+        </property>
+        <property>
+            <name>mapred.local.dir</name>
+            <value>/opt/tmp</value>
+        </property>
+        <property>
+            <name>mapreduce.map.output.compress</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>mapreduce.map.output.compress.codec</name>
+            <value>com.hadoop.compression.lzo.LzoCodec</value>
+        </property>
+        <property>
+            <name>mapred.child.env</name>
+            <value>LD_LIBRARY_PATH=/opt/hadoop/lib/native</value>
+        </property>
+        <property>
+	        <name>mapred.remote.os</name>
+	        <value>Linux</value>
+        </property>
+    </configuration>
+    ```
+
+- /opt/hadoop/etc/hadoop/yarn-site.xml在namenode active上，namenode standby上（注意:namenode是active还是standby是由zookeeper选举决定的，本文当为了叙述方便，将20机器称为namenode active，将106机器称为namenode standby），以及datanode上有不同的配置
+    1. 在namenode active上配置如下：
+
+         ```xml
+         <configuration>
+             <property>
+                 <name>yarn.resourcemanager.connect.retry-interval.ms</name>
+                 <value>2000</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
+                  <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.ha.enabled</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.ha.rm-ids</name>
+                 <value>rm1,rm2</value>
+             </property>
+             <!-- current resource manager id -->
+             <property>
+                 <name>yarn.resourcemanager.ha.id</name>
+                 <value>rm1</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.hostname.rm1</name>
+                 <value>nna</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.hostname.rm2</name>
+                 <value>nns</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.recovery.enabled</name>
+                 <value>true</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.zk-address</name>
+                 <value>zk125:2181,zk126:2181,zk127:2181</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.store.class</name>
+                 <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+             </property>
+             <property>
+                 <name>yarn.resourcemanager.cluster-id</name>
+                 <value>eflag-cluster-yarn</value>
+             </property>
+             <property>
+                 <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
+                 <value>5000</value>
+             </property>
+             <property>
+                 <name>yarn.client.failover-proxy-provider</name>
+                 <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
+             </property>
          </configuration>
          ```
 
@@ -484,8 +773,8 @@
 - 查看yarn资源:在浏览器中输入如下url `http://nna:8088/` 点击查看yarn状态
 - [HDFS Users Guide](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html)
 
-## 4. 安装spark
-- 下载合适版本的 spark 安装包。并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
+## 4. 安装Spark
+- 下载合适版本的 Spark 安装包。并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
 - 解压安装包至 `/home/cluster/package/`
 - 在 `/opt`下创建软连接 `ln -s /home/cluster/package/spark-2.0.0-bin-hadoop2.7 spark`
 - 在/opt/spark/conf/spark-env.sh中配置如下内容
@@ -504,6 +793,7 @@
     spark.master                     spark://nna:7077
     spark.eventLog.enabled           true
     spark.eventLog.dir               hdfs://eflagcluster/sparkeventlog
+    spark.history.fs.logDirectory    hdfs://eflagcluster/sparkeventlog  # 之后可以使用无参命令 start-history-server.sh 启动历史服务
     ```
 
 - 在/opt/spark/conf/slaves中配置如下内容
@@ -519,8 +809,8 @@
     dn205
     ```
 
-- 启动spark: 在namenode active设备上运行如下命令 `sbin/start-all.sh`
-- 查看spark状态:在浏览器中输入如下url “http://nna:8080/” 即可在网页上查看spark运行状态
+- 启动Spark: 在namenode active设备上运行如下命令 `sbin/start-all.sh`
+- 查看Spark状态:在浏览器中输入如下url “http://nna:8080/” 即可在网页上查看Spark运行状态
 - [quick-start](http://spark.apache.org/docs/2.0.0/quick-start.html)
 
 ## 5. 安装HBase
@@ -600,11 +890,11 @@
 
 - 启动HBase:在master上的HBase目录下使用命令 `./bin/start-hbase.sh` 启动HBase。
 - 启动高可用备用master节点:backup master 的HBase目录下使用命令`./bin/hbase-daemon.sh start master`启动备用master节点。
-- 启动 hbase shell 在HBase目录下使用命令 `./bin/hbase shell` 启动hbase shell后即可使用HBase相关语句进行数据操作
-- 使用浏览器访问路径 `http://nna:16010/` 即可使用web查看hbase状态
+- 启动 HBase shell 在HBase目录下使用命令 `./bin/hbase shell` 启动HBase shell后即可使用HBase相关语句进行数据操作
+- 使用浏览器访问路径 `http://nna:16010/` 即可使用web查看HBase状态
 
-## 6. 安装kafka
-- 下载合适版本的kafka（kafka主要用来相spark任务提供数据，因此主要考虑对spark的兼容性，spark user guide 中可以查询到其版本间的对应关系），并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
+## 6. 安装Kafka
+- 下载合适版本的Kafka（Kafka主要用来向Spark任务提供数据，因此主要考虑对Spark的兼容性，spark user guide 中可以查询到其版本间的对应关系），并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
 - 解压安装包至 `/home/cluster/package/`
 - 在 `/opt`下创建软连接 `ln -s /home/cluster/package/kafka_2.11-0.10.0.1 kafka`
 - 在 /opt/kafka/config/server.properties 中配置如下内容
@@ -619,12 +909,12 @@
     zookeeper.connect=zk125:2181,zk126:2181,zk127:2181
     ```
 
-- 启动kafka:在所有需要启动kafka的设备上的kafka目录下使用命令 `../bin/kafka-server-start.sh ./config/server.properties ` 启动kafka。
+- 启动Kafka:在所有需要启动Kafka的设备上的Kafka目录下使用命令 `../bin/kafka-server-start.sh ./config/server.properties ` 启动Kafka。
 - 创建topic: `./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication 3 --partition 1 --topic test`
-- 测试kafka:
+- 测试Kafka:
     - 查看topic是否创建成功: `./bin/kafka-topics.sh --list --zookeeper localhost:2181`
     - 启动消费者: `./bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test`
-    - 启动生产者: `./bin/kafka-console-producer.sh --broker-list zookeeper1:9092 --topic test` ,在集群任意机器上的生产者终端随意输入字符，回车后在任意机器上的消费者终端输出同样的字符，则kafka集群配置成功
+    - 启动生产者: `./bin/kafka-console-producer.sh --broker-list zookeeper1:9092 --topic test` ,在集群任意机器上的生产者终端随意输入字符，回车后在任意机器上的消费者终端输出同样的字符，则Kafka集群配置成功
 
 ## 7. 附录
 
