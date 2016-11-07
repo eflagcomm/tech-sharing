@@ -894,27 +894,28 @@
 - 使用浏览器访问路径 `http://nna:16010/` 即可使用web查看HBase状态
 
 ## 6. 安装Kafka
-- 下载合适版本的Kafka（Kafka主要用来向Spark任务提供数据，因此主要考虑对Spark的兼容性，spark user guide 中可以查询到其版本间的对应关系），并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
+- 下载合适版本的Kafka（Kafka主要用来向Spark任务提供数据，因此主要考虑对Spark的兼容性，spark user guide 中可以查询到其版本间的对应关系），并将该压缩包复制到设备 “dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上, 由这几台服务器组成 Kafka 集群.
 - 解压安装包至 `/home/cluster/package/`
 - 在 `/opt`下创建软连接 `ln -s /home/cluster/package/kafka_2.11-0.10.0.1 kafka`
 - 在 /opt/kafka/config/server.properties 中配置如下内容
 
     ```
-    broker.id=0 #server id,每台设备均不能相同
-    listeners=PLAINTEXT://:9092
-    port=9092
-    host.name=nna #设备网络名
-    advertised.port=9092
-    advertised.host.name=nna #设备网络名
-    zookeeper.connect=zk125:2181,zk126:2181,zk127:2181
+    broker.id=0                        #server id,每台设备均不能相同
+    listeners=PLAINTEXT://dn108:9092   # 使用本机的 hostname
+    num.network.threads=8              # 应对大吞吐量需要使用更多的线程
+    num.io.threads=8                   # 应对大吞吐量需要使用更多的线程
+    log.dirs=/path/to/your/kafka-data-log    # 是 Kakfa 的数据日志目录, 最好指向磁盘阵列
+    num.partitions=1                   # 默认值, 可用在创建 topic 的过程中, 使用 --partition 设置新创建的 topic
+    log.retention.hours=168            # 数据默认缓存 7 天, 可用根据你的磁盘容量修改
+    zookeeper.connect=zk125:2181,zk126:2181,zk127:2181   # 指向你的 ZooKeeper 服务器列表
     ```
 
-- 启动Kafka:在所有需要启动Kafka的设备上的Kafka目录下使用命令 `../bin/kafka-server-start.sh ./config/server.properties ` 启动Kafka。
-- 创建topic: `./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication 3 --partition 1 --topic test`
+- 启动Kafka:在所有需要启动Kafka的设备上的Kafka目录下使用命令 `./bin/kafka-server-start.sh ./config/server.properties ` 启动Kafka.
+- 创建topic: `./bin/kafka-topics.sh --create --zookeeper zk125,zk126,zk127 --replication-factor 3 --partition 1 --topic test`, 根据实践的数据情况调整 replication-factor 和 partition 参数, zookeeper 参数列表可以不用写全(以下同).
 - 测试Kafka:
-    - 查看topic是否创建成功: `./bin/kafka-topics.sh --list --zookeeper localhost:2181`
-    - 启动消费者: `./bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test`
-    - 启动生产者: `./bin/kafka-console-producer.sh --broker-list zookeeper1:9092 --topic test` ,在集群任意机器上的生产者终端随意输入字符，回车后在任意机器上的消费者终端输出同样的字符，则Kafka集群配置成功
+    - 查看topic是否创建成功: `./bin/kafka-topics.sh --list --zookeeper zk125,zk126,zk127`
+    - 启动消费者: `./bin/kafka-console-consumer.sh --zookeeper zk125,zk126,zk127 --topic test`
+    - 启动生产者: `./bin/kafka-console-producer.sh --broker-list dn108:9092,dn121,9092 --topic test` ,在生产者终端随意输入字符，回车后在任意机器上的消费者终端输出同样的字符，则 Kafka 集群配置成功, broker-list 可以是 Kafka 集群中的任意几台服务器.
 
 ## 7. 附录
 
