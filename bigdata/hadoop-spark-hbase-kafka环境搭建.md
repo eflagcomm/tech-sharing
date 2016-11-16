@@ -3,11 +3,11 @@
 ## 0. 集群环境
 
 - jdk版本:1.8.0
-- sacla版本:2.10
+- sacla版本:2.11
 - Hadoop版本:2.7.2
-- Spark版本:2.0.0
+- Spark版本:2.0.2
 - HBase版本:1.2.2
-- Kafka版本:2.11
+- Kafka版本:0.10.0.1(scala-2.11)
 - ZooKeeper版本:3.4.8
 - 集群 hostname, 拓扑图, 安装的应用软件:
 
@@ -198,7 +198,7 @@
         </property>
         <property>
             <name>dfs.namenode.shared.edits.dir</name>
-            <value>qjournal://nna:8485;nns:8485;dn108:8485;dn121:8485;dn122:8485;dn123:8485;dn124:8485;dn203:8485;dn205:8485/eflag-cluster</value>
+            <value>qjournal://dn108:8485;dn121:8485;dn122:8485;dn123:8485;dn124:8485;dn203:8485;dn205:8485/eflag-cluster</value>
         </property>
         <property>
             <name>dfs.journalnode.edits.dir</name>
@@ -737,7 +737,7 @@
                 <name>yarn.nodemanager.log-dirs</name>
                 <value>/opt/tmp/yarn/logs</value>
             </property>
-            <!-- cpu逻辑核心数，根据设备实际配置填写-->
+            <!-- cpu逻辑核心数，根据设备实际配置填写, 至少预留一个 core 给系统使用-->
             <property>
                 <name>yarn.nodemanager.resource.cpu-vcores</name>
                 <value>48</value>
@@ -776,7 +776,7 @@
 ## 4. 安装Spark
 - 下载合适版本的 Spark 安装包。并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
 - 解压安装包至 `/home/cluster/package/`
-- 在 `/opt`下创建软连接 `ln -s /home/cluster/package/spark-2.0.0-bin-hadoop2.7 spark`
+- 在 `/opt`下创建软连接 `ln -s /home/cluster/package/spark-2.0.2-bin-hadoop2.7 spark`
 - 在/opt/spark/conf/spark-env.sh中配置如下内容
 
     ```sh
