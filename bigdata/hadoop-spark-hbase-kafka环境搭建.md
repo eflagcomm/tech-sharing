@@ -791,6 +791,7 @@
 
     ```
     spark.master                     spark://nna:7077
+    spark.driver.extraLibraryPath    /opt/hadoop/lib/native             # 消除 spark-submit 启动警告: Unable to load native-hadoop library for your platform
     spark.eventLog.enabled           true
     spark.eventLog.dir               hdfs://eflagcluster/sparkeventlog
     spark.history.fs.logDirectory    hdfs://eflagcluster/sparkeventlog  # 之后可以使用无参命令 start-history-server.sh 启动历史服务
