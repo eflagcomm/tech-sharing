@@ -810,6 +810,7 @@
     dn205
     ```
 
+- **[支持 executors 动态分配](http://tgrall.github.io/blog/2016/09/01/setting-up-spark-dynamic-allocation-on-mapr/)**
 - 启动Spark: 在namenode active设备上运行如下命令 `sbin/start-all.sh`
 - 查看Spark状态:在浏览器中输入如下url “http://nna:8080/” 即可在网页上查看Spark运行状态
 - [quick-start](http://spark.apache.org/docs/2.0.0/quick-start.html)
