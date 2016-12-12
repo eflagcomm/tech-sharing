@@ -790,7 +790,7 @@
 - 在/opt/spark/conf/spark-defaults.conf中配置如下内容
 
     ```
-    spark.master                     spark://nna:7077
+    # spark.master                     spark://nna:7077                 # 用于启动 Spark standalone cluster
     spark.driver.extraLibraryPath    /opt/hadoop/lib/native             # 消除 spark-submit 启动警告: Unable to load native-hadoop library for your platform
     spark.eventLog.enabled           true
     spark.eventLog.dir               hdfs://eflagcluster/sparkeventlog
