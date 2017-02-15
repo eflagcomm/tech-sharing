@@ -3,11 +3,11 @@
 ## 0. 集群环境
 
 - jdk版本:1.8.0
-- sacla版本:2.10
+- sacla版本:2.11
 - Hadoop版本:2.7.2
-- Spark版本:2.0.0
+- Spark版本:2.0.2
 - HBase版本:1.2.2
-- Kafka版本:2.11
+- Kafka版本:0.10.0.1(scala-2.11)
 - ZooKeeper版本:3.4.8
 - 集群 hostname, 拓扑图, 安装的应用软件:
 
@@ -198,7 +198,7 @@
         </property>
         <property>
             <name>dfs.namenode.shared.edits.dir</name>
-            <value>qjournal://nna:8485;nns:8485;dn108:8485;dn121:8485;dn122:8485;dn123:8485;dn124:8485;dn203:8485;dn205:8485/eflag-cluster</value>
+            <value>qjournal://dn108:8485;dn121:8485;dn122:8485;dn123:8485;dn124:8485;dn203:8485;dn205:8485/eflag-cluster</value>
         </property>
         <property>
             <name>dfs.journalnode.edits.dir</name>
@@ -408,49 +408,15 @@
 
         ```xml
         <configuration>
+            <!-- vmem-check-enabled 与 vmem-pmem-ratio 适用于启动 Spark Yarn client 模式 -->
+            <!-- 必须配置在 DataNode 上, 否则不能生效 -->
             <property>
-                <name>yarn.resourcemanager.connect.retry-interval.ms</name>
-                <value>2000</value>
+                <name>yarn.nodemanager.vmem-check-enabled</name>
+                <value>false</value>
             </property>
             <property>
-                <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
-                 <value>true</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.ha.enabled</name>
-                <value>true</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.ha.rm-ids</name>
-                <value>rm1,rm2</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.hostname.rm1</name>
-                <value>nna</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.hostname.rm2</name>
-                <value>nns</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.recovery.enabled</name>
-                <value>true</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.zk-address</name>
-                <value>zk125:2181,zk126:2181,zk127:2181</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.store.class</name>
-                <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.zk-address</name>
-                <value>zk125:2181,zk126:2181,zk127:2181</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.cluster-id</name>
-                <value>eflag-cluster-yarn</value>
+                <name>yarn.nodemanager.vmem-pmem-ratio</name>
+                <value>4</value>
             </property>
             <property>
                 <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
@@ -544,212 +510,6 @@
     </configuration>
     ```
 
-- /opt/hadoop/etc/hadoop/yarn-site.xml在namenode active上，namenode standby上（注意:namenode是active还是standby是由zookeeper选举决定的，本文当为了叙述方便，将20机器称为namenode active，将106机器称为namenode standby），以及datanode上有不同的配置
-    1. 在namenode active上配置如下：
-
-         ```xml
-         <configuration>
-             <property>
-                 <name>yarn.resourcemanager.connect.retry-interval.ms</name>
-                 <value>2000</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
-                  <value>true</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.ha.enabled</name>
-                 <value>true</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.ha.rm-ids</name>
-                 <value>rm1,rm2</value>
-             </property>
-             <!-- current resource manager id -->
-             <property>
-                 <name>yarn.resourcemanager.ha.id</name>
-                 <value>rm1</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.hostname.rm1</name>
-                 <value>nna</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.hostname.rm2</name>
-                 <value>nns</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.recovery.enabled</name>
-                 <value>true</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.zk-address</name>
-                 <value>zk125:2181,zk126:2181,zk127:2181</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.store.class</name>
-                 <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.cluster-id</name>
-                 <value>eflag-cluster-yarn</value>
-             </property>
-             <property>
-                 <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
-                 <value>5000</value>
-             </property>
-             <property>
-                 <name>yarn.client.failover-proxy-provider</name>
-                 <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
-             </property>
-         </configuration>
-         ```
-
-    2. 在namenode standby上配置如下：
-
-         ```xml
-         <configuration>
-             <property>
-                 <name>yarn.resourcemanager.connect.retry-interval.ms</name>
-                 <value>2000</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
-                  <value>true</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.ha.enabled</name>
-                 <value>true</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.ha.rm-ids</name>
-                 <value>rm1,rm2</value>
-             </property>
-             <!-- current resource manager id -->
-             <property>
-                 <name>yarn.resourcemanager.ha.id</name>
-                 <value>rm2</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.hostname.rm1</name>
-                 <value>nna</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.hostname.rm2</name>
-                 <value>nns</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.recovery.enabled</name>
-                 <value>true</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.zk-address</name>
-                 <value>zk125:2181,zk126:2181,zk127:2181</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.store.class</name>
-                 <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.zk-address</name>
-                 <value>zk125:2181,zk126:2181,zk127:2181</value>
-             </property>
-             <property>
-                 <name>yarn.resourcemanager.cluster-id</name>
-                 <value>eflag-cluster-yarn</value>
-             </property>
-             <property>
-                 <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
-                 <value>5000</value>
-             </property>
-             <property>
-                 <name>yarn.client.failover-proxy-provider</name>
-                 <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
-             </property>
-         </configuration>
-         ```
-
-    3. 在datanode上配置如下：
-
-        ```xml
-        <configuration>
-            <property>
-                <name>yarn.resourcemanager.connect.retry-interval.ms</name>
-                <value>2000</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
-                 <value>true</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.ha.enabled</name>
-                <value>true</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.ha.rm-ids</name>
-                <value>rm1,rm2</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.hostname.rm1</name>
-                <value>nna</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.hostname.rm2</name>
-                <value>nns</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.recovery.enabled</name>
-                <value>true</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.zk-address</name>
-                <value>zk125:2181,zk126:2181,zk127:2181</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.store.class</name>
-                <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.zk-address</name>
-                <value>zk125:2181,zk126:2181,zk127:2181</value>
-            </property>
-            <property>
-                <name>yarn.resourcemanager.cluster-id</name>
-                <value>eflag-cluster-yarn</value>
-            </property>
-            <property>
-                <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
-                <value>5000</value>
-            </property>
-            <property>
-                <name>yarn.client.failover-proxy-provider</name>
-                <value>org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider</value>
-            </property>
-            <property>
-               <name>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage</name>
-               <value>98.5</value>
-            </property>
-            <property>
-                <name>yarn.nodemanager.local-dirs</name>
-                <value>/opt/tmp/yarn/local</value>
-            </property>
-            <property>
-                <name>yarn.nodemanager.log-dirs</name>
-                <value>/opt/tmp/yarn/logs</value>
-            </property>
-            <!-- cpu逻辑核心数，根据设备实际配置填写-->
-            <property>
-                <name>yarn.nodemanager.resource.cpu-vcores</name>
-                <value>48</value>
-            </property>
-            <!-- 设备可使用内存，其值为设备内存减去系统保留内存和HBase保留内存，单位为MB，不同设备内存对应的保留内存参见附表-->
-            <property>
-                <name>yarn.nodemanager.resource.memory-mb</name>
-                <value>49152</value>
-            </property>
-        </configuration>
-        ```
-
 - 在/opt/hadoop/etc/hadoop/slaves中配置如下内容
 
     ```
@@ -776,7 +536,7 @@
 ## 4. 安装Spark
 - 下载合适版本的 Spark 安装包。并将该压缩包复制到设备 “nna，nns，dn21，dn108，dn121，dn122，dn123，dn124，dn203，dn205” 上。
 - 解压安装包至 `/home/cluster/package/`
-- 在 `/opt`下创建软连接 `ln -s /home/cluster/package/spark-2.0.0-bin-hadoop2.7 spark`
+- 在 `/opt`下创建软连接 `ln -s /home/cluster/package/spark-2.0.2-bin-hadoop2.7 spark`
 - 在/opt/spark/conf/spark-env.sh中配置如下内容
 
     ```sh
@@ -790,7 +550,8 @@
 - 在/opt/spark/conf/spark-defaults.conf中配置如下内容
 
     ```
-    spark.master                     spark://nna:7077
+    # spark.master                     spark://nna:7077                 # 用于启动 Spark standalone cluster
+    spark.driver.extraLibraryPath    /opt/hadoop/lib/native             # 消除 spark-submit 启动警告: Unable to load native-hadoop library for your platform
     spark.eventLog.enabled           true
     spark.eventLog.dir               hdfs://eflagcluster/sparkeventlog
     spark.history.fs.logDirectory    hdfs://eflagcluster/sparkeventlog  # 之后可以使用无参命令 start-history-server.sh 启动历史服务
@@ -809,6 +570,7 @@
     dn205
     ```
 
+- **[支持 executors 动态分配](http://tgrall.github.io/blog/2016/09/01/setting-up-spark-dynamic-allocation-on-mapr/)**
 - 启动Spark: 在namenode active设备上运行如下命令 `sbin/start-all.sh`
 - 查看Spark状态:在浏览器中输入如下url “http://nna:8080/” 即可在网页上查看Spark运行状态
 - [quick-start](http://spark.apache.org/docs/2.0.0/quick-start.html)
