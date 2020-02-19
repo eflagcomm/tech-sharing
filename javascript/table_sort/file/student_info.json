@@ -1,0 +1,17 @@
+{"student_info": [
+    {
+      "name":"Mary",
+      "gender":"female",
+      "age":14,
+      "school":"北大",
+      "Contacts":["Jone, Kali"]
+    },
+    {
+      "name":"Jack",
+      "gender":"male",
+      "age":19,
+      "school":"清华",
+      "Contacts":["Maker, Kali"]
+    }
+  ]
+}

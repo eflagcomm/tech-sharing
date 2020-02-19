@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta charset=utf-8" />
+    <!-- 导入 css 文件-->
+    <link rel="stylesheet" href="./css/table_sort.css" />
+    <!-- 导入 js 文件-->
+    <script type="text/javascript" src="./lib/jquery-3.1.0.min.js"> </script>
+    <script type="text/javascript" src="./lib/table_sort_tool.js"> </script>
+    <title>表格demo</title>
+</head>
+<body>
+    <div class="widget_tableDiv">
+        <table id="myTable">
+            <caption> Employee information table</caption>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Age</td>
+                    <td>Position</td>
+                    <td>Income</td>
+                    <td>Gender</td>
+                </tr>
+            </thead>
+            <tbody class="scrollingContent">
+                <tr>
+                    <td>John</td>
+                    <td>37</td>
+                    <td>Managing director</td>
+                    <td>10.000</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>Susan</td>
+                    <td>34</td>
+                    <td>Partner</td>
+                    <td>90.000</td>
+                    <td>Female</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <p> 读取功能:  </p>
+        <input type="file" id="json_file" name="test">
+        <input id="btn_json" type="button" value="添加">
+        <p> <textarea name="json_area" rows="10" cols="30"> </textarea></p>
+
+        <br>
+        <p> 保存功能: </p>
+        <label>  文件名: </label><input type="text" name="save_name" />
+        <input id="btn_save" type="button" value="保存">
+    </div>
+
+    <!-- 页面逻辑入口: 执行 准备工作 和 表格初始化 -->
+    <script type="text/javascript">
+            //全局变量
+            var tableWidget_tableCounter = 0;       // 数据类型: 数值
+            var tableWidget_arraySort = new Array();// 数据类型: 数组
+            var tableWidget_okToSort = true;        // 数据类型: bool
+            var activeColumn = new Array();
+            /* 注册 window.onload 事件处理函数 */
+            window.onload = function () {
+                preparePreview();
+                prepareReadJson();
+                prepareSaveJson();
+                initTableWidget('myTable',500,600,Array('S','N',false,'N','S'));
+            };
+    </script>
+</body>
+</html>
